@@ -1,0 +1,54 @@
+summary:
+1.file_loc--> where it is stored
+2.file_type--? which type of file we are using
+3.infer_schema-->do we need to change that?
+4.first_row_is_header--> is first row is header?
+5.delimiter--> separated by
+
+to read the csv file:
+st_value=spark.read.format(2)\.option("inferschema",3)\.option("header",4)\.option("sep",5)\.load(1)
+
+to show or dispay:
+dispaly(st_value)-->like table
+st_value.show()--> like pandas
+
+rename:
+3 methods:
+1.df=df.withColumnRenamed("ID","ID_new")......,
+2.df2=df.selectExpr("ID as New_ID","Name as New_Name","Age as New_Age")
+3.from pyspark.sql.functions import col
+  df2=df.select(col("ID").alias("ID_New"),col("Name"),col("Age"))
+
+Add column:
+from pyspark.sql.functions import lit
+df=df.withColumn("Contry",lit("India"))
+lit--> used to replace null value or by default values
+
+df=df.withColumn("Salary",col("ID")*col("Age")).withColumn(.....)
+
+df=df.select(col("ID"),col("Name"),col("Age"),lit("India").alias("Country"))
+df.show()
+
+Filter:
+df.filter(df.ID==1).show()
+
+from pyspark.sql.functions import col
+df.filter((col("ID")==1) | (col("Name")=="Shivam")).show()
+df.filter((col("ID")==1) & (col("Name")=="Shivam")).show()
+df.filter((col("ID")!=1)).show()
+
+Sort:
+df.sort(df.ID.desc()).show()
+df.orderBy(df.ID.desc()).show()
+df.orderBy(df.ID_New.desc(),df.Age_New).show()
+df.orderBy(col("ID_New").desc(),col(...)...)
+
+To create a new row:
+df1=spark.createDataFrame([[2,"Shivam",23],[2,"Shivam",46]])
+df=df.union(df1)
+
+df.show()
+
+
+
+
